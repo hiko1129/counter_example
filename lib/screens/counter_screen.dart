@@ -24,9 +24,7 @@ class _CounterScreenState extends State<CounterScreen> {
       builder: (context, snapshot) {
         if (snapshot.hasError) {
           print(snapshot.error);
-          if (!snapshot.hasData) {
-            const Text('問題が発生しました。もう一度お試しください。');
-          }
+          const Text('問題が発生しました。もう一度お試しください。');
         }
 
         if (!snapshot.hasData) {
