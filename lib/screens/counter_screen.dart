@@ -15,6 +15,7 @@ class _CounterScreenState extends State<CounterScreen> {
     Provider.of<CounterBloc>(context, listen: false).increment();
   }
 
+
   @override
   Widget build(BuildContext context) {
     final bloc = Provider.of<CounterBloc>(context);
@@ -24,11 +25,11 @@ class _CounterScreenState extends State<CounterScreen> {
       builder: (context, snapshot) {
         if (snapshot.hasError) {
           print(snapshot.error);
-          const Text('問題が発生しました。もう一度お試しください。');
+          return const Text('問題が発生しました。もう一度お試しください。');
         }
 
         if (!snapshot.hasData) {
-          const Text('データがありません');
+          return const Text('データがありません');
         }
 
         final count = snapshot.data.value;
