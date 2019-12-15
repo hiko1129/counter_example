@@ -1,32 +1,49 @@
 import 'package:counter_app/blocs/counter_bloc.dart';
-import 'package:counter_app/models/number_counter.dart';
+import 'package:counter_app/models/counter.dart';
 import 'package:flutter/material.dart';
-import 'package:meta/meta.dart';
+import 'package:provider/provider.dart';
 
-class CounterScreen extends StatelessWidget {
-  final CounterBloc _counterBloc;
+class CounterScreen extends StatefulWidget {
+  @override
+  _CounterScreenState createState() => _CounterScreenState();
+}
 
-  CounterScreen({@required CounterBloc counterBloc})
-      : _counterBloc = counterBloc;
+class _CounterScreenState extends State<CounterScreen> {
+  @override
+  void initState() {
+    super.initState();
+    Provider.of<CounterBloc>(context, listen: false).increment();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder(
-      stream: _counterBloc.count,
-      builder: (BuildContext context, AsyncSnapshot<NumberCounter> snapshot) {
-        // FIXME(hiko1129): おそらく本当はBehaviorSubjectのseededで初期値使ってnullにならないようにしたよい
-        if (!snapshot.hasData) return Container();
+    final bloc = Provider.of<CounterBloc>(context);
+
+    return StreamBuilder<Counter>(
+      stream: bloc.count,
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          print(snapshot.error);
+          if (!snapshot.hasData) {
+            const Text('問題が発生しました。もう一度お試しください。');
+          }
+        }
+
+        if (!snapshot.hasData) {
+          const Text('データがありません');
+        }
 
         final count = snapshot.data.value;
+
         return Scaffold(
           appBar: AppBar(
-            title: Text("CounterScreen"),
+            title: const Text("CounterScreen"),
           ),
           body: Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Text(
+                const Text(
                   'You have pushed the button this many times:',
                 ),
                 Text(
@@ -40,16 +57,12 @@ class CounterScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.end,
             children: <Widget>[
               FloatingActionButton(
-                onPressed: () {
-                  _counterBloc.increment();
-                },
+                onPressed: bloc.increment,
                 child: Icon(Icons.add),
               ),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               FloatingActionButton(
-                onPressed: () {
-                  _counterBloc.decrement();
-                },
+                onPressed: bloc.decrement,
                 child: Icon(Icons.remove),
               )
             ],

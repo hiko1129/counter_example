@@ -1,9 +1,9 @@
 import 'package:meta/meta.dart';
 
-class NumberCounter {
-  int _value;
+class Counter {
+  Counter({@required int value}) : _value = value;
 
-  NumberCounter({@required int value}) : _value = value;
+  int _value;
 
   void increment() {
     _value += 1;

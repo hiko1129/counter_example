@@ -1,6 +1,7 @@
 import 'package:counter_app/blocs/counter_bloc.dart';
 import 'package:counter_app/screens/counter_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 void main() => runApp(MyApp());
 
@@ -13,8 +14,10 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: CounterScreen(
-        counterBloc: CounterBloc(),
+      home: Provider<CounterBloc>(
+        create: (_) => CounterBloc(),
+        child: CounterScreen(),
+        dispose: (_, bloc) => bloc.dispose(),
       ),
     );
   }

@@ -1,19 +1,19 @@
 import 'dart:async';
 
 import 'package:counter_app/blocs/bloc.dart';
-import 'package:counter_app/models/number_counter.dart';
+import 'package:counter_app/models/counter.dart';
 
 class CounterBloc implements Bloc {
-  final _counter = NumberCounter(value: 0);
-
   CounterBloc() {
     _counterStreamController.sink.add(_counter);
   }
 
-  final StreamController<NumberCounter> _counterStreamController =
-      StreamController<NumberCounter>();
+  final _counter = Counter(value: 0);
 
-  Stream<NumberCounter> get count => _counterStreamController.stream;
+  final StreamController<Counter> _counterStreamController =
+      StreamController<Counter>();
+
+  Stream<Counter> get count => _counterStreamController.stream;
 
   void increment() {
     _counter.increment();
